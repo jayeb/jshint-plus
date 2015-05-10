@@ -5,7 +5,7 @@ var fs = require('fs'),
     logSymbols = require('log-symbols');
 
 module.exports = {
-  path: __dirname,
+  path: __dirname + 'jshint-plus.js',
   reporter: function (reportedErrors) {
       var notifierProcess,
           projectName,
