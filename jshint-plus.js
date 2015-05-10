@@ -5,6 +5,7 @@ var fs = require('fs'),
     logSymbols = require('log-symbols');
 
 module.exports = {
+  path: __dirname,
   reporter: function (errors) {
       var notifierProcess,
           projectName,

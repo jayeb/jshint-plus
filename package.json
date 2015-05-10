@@ -2,10 +2,7 @@
   "name": "jshint-plus",
   "version": "0.1.0",
   "description": "A JSHint reporter with stylized output and notifications",
-  "main": [
-    "index.js",
-    "jshint-plus.js"
-  ],
+  "main": "jshint-plus.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
