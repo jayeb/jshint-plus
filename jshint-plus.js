@@ -104,7 +104,7 @@ module.exports = {
         fs.writeFileSync(summaryFile, summaryString);
         filesToOpen.push(summaryFile);
 
-        notifierProcess = require('child_process').fork('notifier')
+        notifierProcess = require('child_process').fork('notifier.js')
 
         notifierProcess.send({
           message: notificationMessage,
