@@ -106,8 +106,6 @@ module.exports = {
           }
         });
 
-        console.log(filesToOpen);
-
         if (!!summaryString) {
           // If there's more than one error, write the message to a file and add it to the end of the list
           if (!fs.existsSync(summaryDir)){
