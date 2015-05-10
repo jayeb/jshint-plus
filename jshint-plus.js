@@ -6,18 +6,19 @@ var fs = require('fs'),
 
 module.exports = {
   path: __dirname,
-  reporter: function (errors) {
+  reporter: function (reportedErrors) {
       var notifierProcess,
           projectName,
           files = {},
           filesToOpen = [],
           notificationTitle,
           notificationMessage,
-          summaryFile = './.tmp/jshint-errors.txt',
+          consoleString = '',
           summaryString = '',
-          consoleString = '';
+          summaryDir = '.tmp',
+          summaryFile = 'jshint-errors.txt';
 
-      if (errors.length) {
+      if (reportedErrors.length) {
         // Guess project name
         try {
           projectName = require(process.cwd() + path.sep + 'package.json').name;
@@ -27,37 +28,37 @@ module.exports = {
         }
 
         // Build message
-        _.each(errors, function(info, i) {
+        _.each(reportedErrors, function(reportedError) {
           var errorInfo;
 
-          if (!files[info.file]) {
-            files[info.file] = [];
-            filesToOpen.push(info.file + ':' + info.error.line +  ':' + info.error.line);
+          if (!files[reportedError.file]) {
+            files[reportedError.file] = [];
+            filesToOpen.push(reportedError.file + ':' + reportedError.error.line +  ':' + reportedError.error.character);
           }
 
           errorInfo = {
-            filename: _.last(info.file.split('/')),
-            filepath: info.file,
-            line: info.error.line,
-            char: info.error.character,
-            reason: info.error.reason,
-            code: info.error.code
+            filename: _.last(reportedError.file.split('/')),
+            filepath: reportedError.file,
+            line: reportedError.error.line,
+            char: reportedError.error.character,
+            reason: reportedError.error.reason,
+            code: reportedError.error.code
           };
 
-          files[info.file].push(errorInfo);
+          files[reportedError.file].push(errorInfo);
 
           return errorInfo;
         });
 
         notificationTitle = projectName  + ' - JSHint failed';
-        notificationMessage = errors.length + ' error' + (errors.length === 1 ? '' : 's');
+        notificationMessage = reportedErrors.length + ' error' + (reportedErrors.length === 1 ? '' : 's');
 
         if (_.size(files) === 1) {
-          _.each(files, function(info) {
-            if (errors.length === 1) {
-              notificationMessage += ' at ' + [info.file, info.line, info.char].join(':');
+          _.each(files, function(fileErrors) {
+            if (fileErrors.length === 1) {
+              notificationMessage += ' at ' + [fileErrors[0].filename, fileErrors[0].line, fileErrors[0].char].join(':');
             } else {
-              notificationMessage += ' in ' + info.file;
+              notificationMessage += ' in ' + fileErrors[0].filename;
             }
           });
         } else {
@@ -66,45 +67,59 @@ module.exports = {
 
         // Make a table of data for the file output summary
 
-        _.each(files, function(errors, filepath) {
-          var summaryTable = new Table,
-              consoleTable = new Table;
+        _.each(files, function(fileErrors, filepath) {
+          var consoleTable = new Table(),
+              summaryTable = reportedErrors.length > 1 ? new Table() : undefined;
 
-          _.each(errors, function(error) {
-            // Add summary row
-            summaryTable.cell('L', error.line, Table.Number(), 4);
-            summaryTable.cell('C', error.char, Table.Number(), 4);
-            summaryTable.cell('Reason', error.reason);
-            summaryTable.newRow();
-
+          _.each(fileErrors, function(fileErrors) {
             // Add console row
-            consoleTable.cell('L', error.line, Table.Number(), 4);
-            consoleTable.cell('C', error.char, Table.Number(), 4);
-            consoleTable.cell('Reason', error.reason, function(value) {
-              if (error.code.charAt(0) === 'E') {
+            consoleTable.cell('L', fileErrors.line, Table.Number(), 4);
+            consoleTable.cell('C', fileErrors.char, Table.Number(), 4);
+            consoleTable.cell('Reason', fileErrors.reason, function(value) {
+              if (fileErrors.code.charAt(0) === 'E') {
                 return logSymbols.error + ' \033[31m' + String(value) + '\033[0m';
-              } else if (error.code.charAt(0) === 'W') {
+              } else if (fileErrors.code.charAt(0) === 'W') {
                 return logSymbols.warning + ' \033[33m' + String(value) + '\033[0m';
               } else {
                 return Table.string(value);
               }
             });
             consoleTable.newRow();
-          });
 
-          summaryString += filepath + ' - ';
-          summaryString += errors.length + ' error' + (errors.length === 1 ? '' : 's') + '\n';
-          summaryString += '\n' + summaryTable.print() + '\n\n';
+            if (reportedErrors.length > 1) {
+              // Add summary row
+              summaryTable.cell('L', fileErrors.line, Table.Number(), 4);
+              summaryTable.cell('C', fileErrors.char, Table.Number(), 4);
+              summaryTable.cell('Reason', fileErrors.reason);
+              summaryTable.newRow();
+            }
+
+          });
 
           consoleString += '\033[37m' + filepath + '\033[0m\n';
           consoleString += consoleTable.print() + '\n';
+
+          if (reportedErrors.length > 1) {
+            summaryString += filepath + ' - ';
+            summaryString += errors.length + ' error' + (errors.length === 1 ? '' : 's') + '\n';
+            summaryString += '\n' + summaryTable.print() + '\n\n';
+          }
         });
 
-        // Write the message to a file and add it to the end of the list
-        fs.writeFileSync(summaryFile, summaryString);
-        filesToOpen.push(summaryFile);
+        console.log(filesToOpen);
 
-        notifierProcess = require('child_process').fork('notifier.js')
+        if (!!summaryString) {
+          // If there's more than one error, write the message to a file and add it to the end of the list
+          if (!fs.existsSync(summaryDir)){
+            fs.mkdirSync(summaryDir, 0766, function(err){
+              console.log(err);
+            });
+          }
+          fs.writeFileSync(summaryDir + '/' + summaryFile, summaryString);
+          filesToOpen.push(summaryDir + '/' + summaryFile);
+        }
+
+        notifierProcess = require('child_process').fork('notifier.js');
 
         notifierProcess.send({
           message: notificationMessage,
