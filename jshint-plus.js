@@ -5,7 +5,7 @@ var fs = require('fs'),
     logSymbols = require('log-symbols');
 
 module.exports = {
-  path: __dirname + 'jshint-plus.js',
+  path: __dirname + path.sep + 'jshint-plus.js',
   reporter: function (reportedErrors) {
       var notifierProcess,
           projectName,
@@ -37,7 +37,7 @@ module.exports = {
           }
 
           errorInfo = {
-            filename: _.last(reportedError.file.split('/')),
+            filename: _.last(reportedError.file.split(path.sep)),
             filepath: reportedError.file,
             line: reportedError.error.line,
             char: reportedError.error.character,
@@ -65,8 +65,7 @@ module.exports = {
           notificationMessage += ' across ' + filesToOpen.length + ' files';
         }
 
-        // Make a table of data for the file output summary
-
+        // Make data tables for the file output summary
         _.each(files, function(fileErrors, filepath) {
           var consoleTable = new Table(),
               summaryTable = reportedErrors.length > 1 ? new Table() : undefined;
@@ -74,7 +73,7 @@ module.exports = {
           _.each(fileErrors, function(fileErrors) {
             // Add console row
             consoleTable.cell('L', fileErrors.line, Table.Number(), 4);
-            consoleTable.cell('C', fileErrors.char, Table.Number(), 4);
+            consoleTable.cell('C', fileErrors.char, Table.Number(), 3);
             consoleTable.cell('Reason', fileErrors.reason, function(value) {
               if (fileErrors.code.charAt(0) === 'E') {
                 return logSymbols.error + ' \033[31m' + String(value) + '\033[0m';
@@ -89,11 +88,10 @@ module.exports = {
             if (reportedErrors.length > 1) {
               // Add summary row
               summaryTable.cell('L', fileErrors.line, Table.Number(), 4);
-              summaryTable.cell('C', fileErrors.char, Table.Number(), 4);
+              summaryTable.cell('C', fileErrors.char, Table.Number(), 3);
               summaryTable.cell('Reason', fileErrors.reason);
               summaryTable.newRow();
             }
-
           });
 
           consoleString += '\033[37m' + filepath + '\033[0m\n';
@@ -101,7 +99,7 @@ module.exports = {
 
           if (reportedErrors.length > 1) {
             summaryString += filepath + ' - ';
-            summaryString += errors.length + ' error' + (errors.length === 1 ? '' : 's') + '\n';
+            summaryString += reportedErrors.length + ' error' + (reportedErrors.length === 1 ? '' : 's') + '\n';
             summaryString += '\n' + summaryTable.print() + '\n\n';
           }
         });
@@ -113,8 +111,8 @@ module.exports = {
               console.log(err);
             });
           }
-          fs.writeFileSync(summaryDir + '/' + summaryFile, summaryString);
-          filesToOpen.push(summaryDir + '/' + summaryFile);
+          fs.writeFileSync(summaryDir + path.sep + summaryFile, summaryString);
+          filesToOpen.push(summaryDir + path.sep + summaryFile);
         }
 
         notifierProcess = require('child_process').fork('notifier.js');
@@ -130,6 +128,5 @@ module.exports = {
       } else {
         console.log(logSymbols.success + ' No errors found.');
       }
-
     }
 };
