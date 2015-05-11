@@ -8,16 +8,17 @@ module.exports = function(grunt) {
 
     // Javascript
     jshint: {
-        src: 'lib/*.js',
+        src: '{lib,jshint,jscs}/*.js',
         options: {
             jshintrc: '.jshintrc',
-            reporter: './lib/reporter.js'
+            reporter: 'jshint/jshint.js'
           }
       },
     jscs: {
-        src: 'lib/*.js',
+        src: '{lib,jshint,jscs}/*.js',
         options: {
-            config: '.jscsrc'
+            config: '.jscsrc',
+            reporter: require('./jscs/index.js').path
           }
       }
   });

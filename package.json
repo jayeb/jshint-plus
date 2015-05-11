@@ -1,22 +1,21 @@
 {
-  "name": "jshint-plus",
+  "name": "reporter-plus",
   "version": "1.0.0",
-  "description": "A JSHint reporter with stylized output and notifications",
+  "description": "A reporter for JSHint and JSCS with stylized output and notifications",
   "files": [
-    "index.js",
-    "lib/reporter.js",
-    "lib/notifier.js"
+    "jshint/index.js",
+    "jscs/index.js"
   ],
   "scripts": {
-    "jshint": "jshint --reporter=lib/reporter.js ./lib",
-    "jscs": "jscs ./lib"
+    "jshint": "jshint --reporter=jshint/jshint.js ./lib",
+    "jscs": "jscs --reporter=jscs/index.js ./lib"
   },
   "author": {
     "name": "Jason Eberle",
     "email": "eberle.jason@gmail.com"
   },
   "license": "MIT",
-  "repository": "jayeb/jshint-plus",
+  "repository": "jayeb/reporter-plus",
   "dependencies": {
     "chalk": "^1.0.0",
     "easy-table": "^0.3.0",
