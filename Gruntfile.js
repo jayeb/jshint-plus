@@ -8,14 +8,14 @@ module.exports = function(grunt) {
 
     // Javascript
     jshint: {
-        src: '*.js',
+        src: 'lib/*.js',
         options: {
             jshintrc: '.jshintrc',
-            reporter: './jshint-plus.js'
+            reporter: './lib/reporter.js'
           }
       },
     jscs: {
-        src: '*.js',
+        src: 'lib/*.js',
         options: {
             config: '.jscsrc'
           }
