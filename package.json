@@ -23,12 +23,22 @@
     "node-notifier": "^4.2.1"
   },
   "devDependencies": {
+    "git-validate": "^1.1.2",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-jscs": "^1.8.0",
     "jit-grunt": "^0.9.1",
     "jscs": "^1.13.1",
     "jshint": "^2.7.0",
+    "precommit-hook": "^2.0.1",
     "time-grunt": "^1.2.0"
-  }
+  },
+  "scripts": {
+    "jshint": "jshint ./app/scripts",
+    "jscs": "jscs ./app/scripts"
+  },
+  "pre-commit": [
+    "jshint",
+    "jscs"
+  ]
 }
