@@ -1,6 +1,6 @@
 {
   "name": "jshint-plus",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A JSHint reporter with stylized output and notifications",
   "files": [
     "jshint-plus.js",
@@ -14,10 +14,7 @@
     "email": "eberle.jason@gmail.com"
   },
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/jayeb/jshint-plus"
-  },
+  "repository": "jayeb/jshint-plus",
   "dependencies": {
     "easy-table": "^0.3.0",
     "lodash": "^3.8.0",
