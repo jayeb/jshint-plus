@@ -1,6 +1,6 @@
 {
   "name": "jshint-plus",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A JSHint reporter with stylized output and notifications",
   "files": [
     "index.js",
@@ -18,13 +18,13 @@
   "license": "MIT",
   "repository": "jayeb/jshint-plus",
   "dependencies": {
+    "chalk": "^1.0.0",
     "easy-table": "^0.3.0",
     "lodash": "^3.8.0",
     "log-symbols": "^1.0.2",
     "node-notifier": "^4.2.1"
   },
   "devDependencies": {
-    "chalk": "^1.0.0",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-jscs": "^1.8.0",
