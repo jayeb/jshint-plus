@@ -1,6 +1,6 @@
 {
   "name": "jshint-plus",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "description": "A JSHint reporter with stylized output and notifications",
   "files": [
     "index.js",
