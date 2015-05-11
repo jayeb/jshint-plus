@@ -3,8 +3,9 @@
   "version": "1.1.0",
   "description": "A reporter for JSHint and JSCS with stylized output and notifications",
   "files": [
-    "jshint/index.js",
-    "jscs/index.js"
+    "jshint",
+    "jscs",
+    "lib"
   ],
   "scripts": {
     "jshint": "jshint --reporter=jshint/jshint.js ./lib",

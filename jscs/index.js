@@ -1,6 +1,6 @@
 var path = require('path'),
     _ = require('lodash'),
-    reporter = require('../lib/reporter.js');
+    reporter = require('../lib/reporter');
 
 module.exports = function jscsReporter(reportedErrors) {
   var errorsByFile = {};
