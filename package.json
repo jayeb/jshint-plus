@@ -34,8 +34,8 @@
     "time-grunt": "^1.2.0"
   },
   "scripts": {
-    "jshint": "jshint ./app/scripts",
-    "jscs": "jscs ./app/scripts"
+    "jshint": "jshint ./lib",
+    "jscs": "jscs ./lib"
   },
   "pre-commit": [
     "jshint",
