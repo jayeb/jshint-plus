@@ -1,6 +1,6 @@
 {
   "name": "reporter-plus",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A reporter for JSHint and JSCS with stylized output and notifications",
   "files": [
     "jshint/index.js",
