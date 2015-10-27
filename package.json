@@ -1,8 +1,9 @@
 {
   "name": "reporter-plus",
   "version": "1.3.0",
-  "description": "A reporter for JSHint and JSCS with stylized output and notifications",
+  "description": "A reporter for JSHint, JSCS, and HTMLHint with stylized output and notifications",
   "files": [
+    "htmlhint",
     "jshint",
     "jscs",
     "lib"
