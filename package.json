@@ -1,12 +1,13 @@
 {
   "name": "reporter-plus",
   "version": "1.3.0",
-  "description": "A reporter for JSHint, JSCS, and HTMLHint with stylized output and notifications",
+  "description": "A reporter with stylized output and notifications for JSHint, JSCS, HTMLHint, and PostCSS",
   "files": [
     "htmlhint",
     "jshint",
     "jscs",
-    "lib"
+    "lib",
+    "postcss"
   ],
   "scripts": {
     "jshint": "jshint --reporter=jshint/jshint.js ./lib",
