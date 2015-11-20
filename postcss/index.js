@@ -6,9 +6,9 @@ module.exports = function constructor() {
   var errorsByFile = {},
       dispatchToReporter;
 
-  dispatchToReporter = _.debounce(_.partial(reporter, errorsByFile, 'postcss'), 50);
+  // Debounce calls to the reporter so all of the errors get cached before reporting
+  dispatchToReporter = _.debounce(_.partial(reporter, errorsByFile, 'postcss'), 100);
 
-  // The PostCSS reporter only returns errors one file at a time
   return function postcssReporter(css, result) {
     var file,
         messagesToClear = [];
