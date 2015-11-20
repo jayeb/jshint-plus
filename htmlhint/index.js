@@ -9,9 +9,6 @@ module.exports = (function constructor() {
   dispatchToReporter = _.debounce(_.partial(reporter, errorsByFile, 'htmlhint'), 50);
 
   return function htmlhintReporter(file) {
-    // HTMLHint only returns errors one file at a time
-    var errors = [];
-
     errorsByFile[file.path] = _.map(file.htmlhint.messages, function reportedErrorLoop(message) {
       var reportedError = message.error;
 
