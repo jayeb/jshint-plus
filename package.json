@@ -4,15 +4,12 @@
   "description": "A reporter with stylized output and notifications for JSHint, JSCS, HTMLHint, and PostCSS",
   "files": [
     "htmlhint",
-    "jshint",
     "jscs",
+    "jshint",
+    "jsonlint",
     "lib",
     "postcss"
   ],
-  "scripts": {
-    "jshint": "jshint --reporter=jshint/jshint.js ./lib",
-    "jscs": "jscs --reporter=jscs/index.js ./lib"
-  },
   "author": {
     "name": "Jason Eberle",
     "email": "eberle.jason@gmail.com"
@@ -25,19 +22,5 @@
     "lodash": "^3.8.0",
     "log-symbols": "^1.0.2",
     "node-notifier": "^4.2.1"
-  },
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.11.2",
-    "grunt-jscs": "^1.8.0",
-    "jit-grunt": "^0.9.1",
-    "jscs": "^1.13.1",
-    "jshint": "^2.7.0",
-    "precommit-hook": "^2.0.1",
-    "time-grunt": "^1.2.0"
-  },
-  "pre-commit": [
-    "jshint",
-    "jscs"
-  ]
+  }
 }
