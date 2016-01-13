@@ -7,7 +7,12 @@ module.exports = (function constructor() {
       dispatchToReporter;
 
   // Debounce calls to the reporter so all of the errors get cached before reporting
-  dispatchToReporter = _.debounce(_.partial(reporter, errorsByFile, 'htmlhint'), 500);
+  dispatchToReporter = _.debounce(function reportErrors() {
+    reporter(errorsByFile, 'htmlhint');
+
+    // Clear errorsByFile so we don't send the same errors multiple times
+    errorsByFile = {};
+  }, 500);
 
   return function htmlhintReporter(file) {
     errorsByFile[file.path] = _.map(file.htmlhint.messages, function reportedErrorLoop(message) {

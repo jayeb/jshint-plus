@@ -7,7 +7,12 @@ module.exports = (function constructor() {
       dispatchToReporter;
 
   // Debounce calls to the reporter so all of the errors get cached before reporting
-  dispatchToReporter = _.debounce(_.partial(reporter, errorsByFile, 'jsonlint'), 100);
+  dispatchToReporter = _.debounce(function reportErrors() {
+    reporter(errorsByFile, 'jsonlint');
+
+    // Clear errorsByFile so we don't send the same errors multiple times
+    errorsByFile = {};
+  }, 100);
 
   // JSONLint only returns one error per file
   return function jsonlintReporter(lint, file) {

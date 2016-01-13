@@ -7,7 +7,12 @@ module.exports = (function constructor() {
       dispatchToReporter;
 
   // Debounce calls to the reporter so all of the errors get cached before reporting
-  dispatchToReporter = _.debounce(_.partial(reporter, errorsByFile, 'jscs'), 100);
+  dispatchToReporter = _.debounce(function reportErrors() {
+    reporter(errorsByFile, 'jscs');
+
+    // Clear errorsByFile so we don't send the same errors multiple times
+    errorsByFile = {};
+  }, 100);
 
   return function jscsReporter(reportedErrors) {
     // Sort errors

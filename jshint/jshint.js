@@ -6,7 +6,13 @@ module.exports = (function constructor() {
   var errorsByFile = {},
       dispatchToReporter;
 
-  dispatchToReporter = _.debounce(_.partial(reporter, errorsByFile, 'jshint'), 100);
+  // Debounce calls to the reporter so all of the errors get cached before reporting
+  dispatchToReporter = _.debounce(function reportErrors() {
+    reporter(errorsByFile, 'jshint');
+
+    // Clear errorsByFile so we don't send the same errors multiple times
+    errorsByFile = {};
+  }, 100);
 
   return {
     reporter: function jshintReporter(reportedErrors) {
